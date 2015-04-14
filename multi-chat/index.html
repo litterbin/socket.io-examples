@@ -11,7 +11,8 @@
                 width:100%;
                 height:40px;
                 color:#fff;
-                background: rgb(66,71,73);
+                /*background: rgb(66,71,73);*/
+                background: rgb(77,162,206);
                 padding:10px;
             }
             div.main {
@@ -28,15 +29,24 @@
                 width:20%;
                 height:100%;
                 padding:10px;
-                background:rgb(230,230,230);
+                background:rgb(229,229,229);
             }
             section.channel {
                 position: relative;
                 left:20%;
-                width:80%;
+                width:60%;
                 height:100%;
                 border: solid;
                 border-color:red;
+            }
+
+            aside.channel {
+                position: absolute;
+                top:0;
+                right:0;
+                width:20%;
+                height:100%;
+                border:5px solid black;
             }
 
             div.messages {
@@ -54,8 +64,15 @@
                 width:100%;
             }
 
-            div.message-input form { background: #000; padding: 2px; }
-            div.message-input form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+            div.message-input form { 
+                padding: 2px; 
+            }
+            div.message-input form input { 
+                border: 0; 
+                padding: 10px; 
+                width: 100%; 
+                margin-right: .5%; 
+            }
             div.message-input form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
 
             #messages { 
@@ -71,10 +88,10 @@
         </style>
     </head>
     <body>
-        <header class="main">chat</header>
+        <header class="main">HEADER</header>
         <div class="main">
             <nav>
-                <div>channels</div>
+                <div>CHANNELS</div>
             </nav>
             <section class="channel">
                 <div class="messages">
@@ -83,25 +100,37 @@
                 </div>
                 <div class="message-input">
                     <form action="">
-                        <input id="m" autocomplete="off" /><button>Send</button>
+                        <input id="m" autocomplete="off" autofocus="on" placeholder="Click here to type a chat message." />
                     </form>
                 </div>
             </section>
+            <aside class="channel">
+                <div>aside</div>
+            </aside>
         </div>
 
-        <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+        <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
         <script type="text/javascript">
         var socket = io();
         $('form').submit(function() {
-            socket.emit('chat message',$('#m').val());
+            msg = {
+                "msg" : $("#m").val(),
+                "channel" : "channel1"
+            };
+            console.log(msg);
+            socket.emit('chat message',msg);
             $('#m').val('');
             return false;
         });
         socket.on('chat message',function(msg) {
-            $('#messages').append($('<li>').text(msg));
+            console.log("id:",socket.id);
+            console.log("msg:",msg);
+            $('#messages').append($('<li>').text(msg.msg));
             document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
         });
+        console.log(socket);
+
         </script>
     </body>
 </html>
