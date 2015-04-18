@@ -31,13 +31,17 @@
                 padding:10px;
                 background:rgb(229,229,229);
             }
+            header.channel {
+                position: relative;
+                left:20%;
+                width:60%;
+                height:10%;
+            }
             section.channel {
                 position: relative;
                 left:20%;
                 width:60%;
-                height:100%;
-                border: solid;
-                border-color:red;
+                height:90%;
             }
 
             aside.channel {
@@ -54,30 +58,33 @@
                 top:0;
                 bottom:40px;
                 width:100%;
-                border: solid;
-                border-color:blue;
+                overflow-y:scroll;
             }
 
-            div.message-input {
+            div.messageInput {
                 position: absolute;
                 bottom:0;
                 width:100%;
             }
 
-            div.message-input form { 
+            div.messageInput form { 
                 padding: 2px; 
             }
-            div.message-input form input { 
+            div.messageInput form input { 
                 border: 0; 
                 padding: 10px; 
                 width: 100%; 
                 margin-right: .5%; 
             }
-            div.message-input form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+            div.messageInput form button { 
+                width: 9%; 
+                background: rgb(130, 224, 255); 
+                border: none; 
+                padding: 10px; 
+            }
 
             #messages { 
                 position: absolute;
-                overflow:auto;
                 max-height:100%;
                 bottom:0;
                 width:100%;
@@ -93,12 +100,16 @@
             <nav>
                 <div>CHANNELS</div>
             </nav>
+            <header class="channel">
+                <div>channel header</div>
+            </header>
+
             <section class="channel">
-                <div class="messages">
+                <div class="messages" id="messagesBox">
                     <ul id="messages">
                     </ul>
                 </div>
-                <div class="message-input">
+                <div class="messageInput">
                     <form action="">
                         <input id="m" autocomplete="off" autofocus="on" placeholder="Click here to type a chat message." />
                     </form>
@@ -126,8 +137,8 @@
         socket.on('chat message',function(msg) {
             console.log("id:",socket.id);
             console.log("msg:",msg);
-            $('#messages').append($('<li>').text(msg.msg));
-            document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+            $('#messages').append($('<li>').text(msg.channel+":"+msg.msg));
+            document.getElementById("messagesBox").scrollTop = document.getElementById("messagesBox").scrollHeight;
         });
         console.log(socket);
 
